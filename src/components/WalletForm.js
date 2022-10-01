@@ -4,11 +4,11 @@ import { failedRequest, getCurrencies } from '../redux/actions';
 
 class WalletForm extends Component {
   state = {
-    expenseValue: '',
+    expenseValue: 0,
     expenseDescription: '',
-    expenseCurrency: '',
-    expenseMethod: '',
-    expenseTag: '',
+    expenseCurrency: 'USD',
+    expenseMethod: 'cash',
+    expenseTag: 'food',
   };
 
   async componentDidMount() {
@@ -36,6 +36,13 @@ class WalletForm extends Component {
   };
 
   render() {
+    const {
+      expenseCurrency,
+      expenseDescription,
+      expenseMethod,
+      expenseTag,
+      expenseValue,
+    } = this.state;
     const { currencies } = this.props;
     return (
       <form>
@@ -43,8 +50,9 @@ class WalletForm extends Component {
           Valor
           <input
             name="expenseValue"
-            data-handleChangeid="value-input"
+            data-testid="value-input"
             type="number"
+            value={ expenseValue }
             onChange={ this.handleChange }
           />
         </label>
@@ -52,8 +60,9 @@ class WalletForm extends Component {
           Descrição
           <input
             name="expenseDescription"
-            data-handleChangeid="description-input"
+            data-testid="description-input"
             type="text"
+            value={ expenseDescription }
             onChange={ this.handleChange }
           />
         </label>
@@ -61,13 +70,10 @@ class WalletForm extends Component {
           Moeda
           <select
             name="expenseCurrency"
-            defaultValue=""
-            data-handleChangeid="currency-input"
+            defaultValue={ expenseCurrency }
+            data-testid="currency-input"
             onChange={ this.handleChange }
           >
-            <option disabled hidden value="">
-              Selecione uma moeda
-            </option>
             {currencies.map((currencie) => (
               <option key={ currencie } value={ currencie }>
                 {currencie}
@@ -78,15 +84,12 @@ class WalletForm extends Component {
         <label htmlFor="expenseMethod">
           Moeda
           <select
-            defaultValue=""
+            defaultValue={ expenseMethod }
             name="expenseMethod"
-            data-handleChangeid="method-input"
+            data-testid="method-input"
             onChange={ this.handleChange }
           >
-            <option value="" disabled hidden>
-              Selecione um pagamento
-            </option>
-            <option value="money">Dinheiro</option>
+            <option value="cash">Dinheiro</option>
             <option value="credit">Cartão de crédito</option>
             <option value="debit">Cartão de débito</option>
           </select>
@@ -94,14 +97,11 @@ class WalletForm extends Component {
         <label htmlFor="expenseTag">
           Moeda
           <select
-            defaultValue=""
+            defaultValue={ expenseTag }
             name="expenseTag"
-            data-handleChangeid="tag-input"
+            data-testid="tag-input"
             onChange={ this.handleChange }
           >
-            <option value="" disabled hidden>
-              Selecione uma categoria
-            </option>
             <option value="food">Alimentação</option>
             <option value="leisure">Lazer</option>
             <option value="work">Trabalho</option>
