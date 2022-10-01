@@ -1,14 +1,6 @@
-import actionType from './actionTypes';
+import LOGIN_ACTION from './actionTypes';
 
 // Coloque aqui suas actions
-const actUser = (payload) => {
-  const action = { type: actionType.user, payload };
-  return action;
-};
+const actLogin = (payload) => ({ type: LOGIN_ACTION, payload });
 
-const actWallet = (payload) => {
-  const action = { type: actionType.wallet, payload };
-  return action;
-};
-
-export { actUser, actWallet };
+export default actLogin;

@@ -1,6 +1,3 @@
-const actionType = {
-  user: 'USER_ACTION',
-  wallet: 'WALLET_ACTION',
-};
+const LOGIN_ACTION = 'LOGIN_ACTION';
 
-export default actionType;
+export default LOGIN_ACTION;
