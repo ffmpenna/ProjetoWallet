@@ -13,6 +13,8 @@ function wallet(state = INITIAL_STATE, action) {
   switch (action.type) {
   case GET_CURRENCIES:
     return { ...state, currencies: action.payload };
+  case 'GET_EXCHANGE':
+    return { ...state, expenses: action.payload };
   case FAILED_REQUEST:
     return { ...state, error: action.payload };
   default:

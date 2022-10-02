@@ -22,4 +22,6 @@ function fetchCurrencies() {
   };
 }
 
-export { actLogin, fetchCurrencies };
+const getExchangeRates = (payload) => ({ type: 'GET_EXCHANGE', payload });
+
+export { actLogin, fetchCurrencies, getExchangeRates };
