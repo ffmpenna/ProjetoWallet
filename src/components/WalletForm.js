@@ -5,11 +5,12 @@ import { fetchCurrencies } from '../redux/actions';
 
 class WalletForm extends Component {
   state = {
-    expenseValue: 0,
+    expenseValue: '',
     expenseDescription: '',
     expenseCurrency: 'USD',
     expenseMethod: 'cash',
     expenseTag: 'food',
+    expenses: [],
   };
 
   componentDidMount() {
@@ -20,6 +21,58 @@ class WalletForm extends Component {
   handleChange = ({ target }) => {
     const { value, name } = target;
     this.setState({ [name]: value });
+  };
+
+  fetchExchangeRates = async (state) => {
+    const END_POINT = 'https://economia.awesomeapi.com.br/json/all';
+    const response = await fetch(END_POINT);
+    const responseJson = await response.json();
+    delete responseJson.USDT;
+    const {
+      expenses,
+      expenseValue,
+      expenseDescription,
+      expenseCurrency,
+      expenseMethod,
+      expenseTag,
+    } = state;
+    if (expenses.length !== 0) {
+      const lastId = expenses[expenses.length - 1].id;
+      this.setState({
+        expenses: [
+          ...expenses,
+          {
+            id: lastId + 1,
+            value: expenseValue,
+            description: expenseDescription,
+            currency: expenseCurrency,
+            method: expenseMethod,
+            tag: expenseTag,
+            exchangeRates: responseJson,
+          },
+        ],
+      });
+    } else {
+      const lastId = 0;
+      this.setState({
+        expenses: [
+          ...expenses,
+          {
+            id: lastId + 1,
+            value: expenseValue,
+            description: expenseDescription,
+            currency: expenseCurrency,
+            method: expenseMethod,
+            tag: expenseTag,
+            exchangeRates: responseJson,
+          },
+        ],
+      });
+    }
+  };
+
+  handleClick = async (state) => {
+    this.fetchExchangeRates(state);
   };
 
   render() {
@@ -69,7 +122,7 @@ class WalletForm extends Component {
           </select>
         </label>
         <label htmlFor="expenseMethod">
-          Moeda
+          Pagamento
           <select
             defaultValue={ expenseMethod }
             name="expenseMethod"
@@ -82,7 +135,7 @@ class WalletForm extends Component {
           </select>
         </label>
         <label htmlFor="expenseTag">
-          Moeda
+          Categoria
           <select
             defaultValue={ expenseTag }
             name="expenseTag"
@@ -96,6 +149,9 @@ class WalletForm extends Component {
             <option value="health">Saúde</option>
           </select>
         </label>
+        <button type="button" onClick={ () => this.handleClick(this.state) }>
+          Adicionar despesa
+        </button>
       </form>
     );
   }
