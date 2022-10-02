@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { failedRequest, getCurrencies } from '../redux/actions';
+import { fetchCurrencies } from '../redux/actions';
 
 class WalletForm extends Component {
   state = {
@@ -11,24 +12,10 @@ class WalletForm extends Component {
     expenseTag: 'food',
   };
 
-  async componentDidMount() {
-    await this.fetchCurrencies();
+  componentDidMount() {
+    const { propsFetchCurrencies } = this.props;
+    propsFetchCurrencies();
   }
-
-  fetchCurrencies = async () => {
-    try {
-      const { getCurrenciesDispatch } = this.props;
-      const END_POINT = 'https://economia.awesomeapi.com.br/json/all';
-      const response = await fetch(END_POINT);
-      const responseJson = await response.json();
-      const currencies = Object.keys(responseJson).filter(
-        (currencie) => currencie !== 'USDT',
-      );
-      getCurrenciesDispatch(currencies);
-    } catch (error) {
-      failedRequestDispatch(error);
-    }
-  };
 
   handleChange = ({ target }) => {
     const { value, name } = target;
@@ -114,14 +101,18 @@ class WalletForm extends Component {
   }
 }
 
+WalletForm.propTypes = {
+  fetchCurrencies: PropTypes.func,
+  currencies: PropTypes.shape([]),
+}.isRequired;
+
 const mapStateToProps = (state) => {
   const { currencies } = state.wallet;
   return { currencies };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getCurrenciesDispatch: (payload) => dispatch(getCurrencies(payload)),
-  failedRequestDispatch: (payload) => dispatch(failedRequest(payload)),
+  propsFetchCurrencies: (payload) => dispatch(fetchCurrencies(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForm);
