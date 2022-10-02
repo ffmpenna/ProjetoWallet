@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCurrencies, getExchangeRates } from '../redux/actions';
+import { fetchCurrencies, fetchExchangeRates } from '../redux/actions';
 
 class WalletForm extends Component {
   state = {
@@ -17,49 +17,19 @@ class WalletForm extends Component {
     propsFetchCurrencies();
   }
 
-  expensesCheck = (expense) => {
-    if (expense.length !== 0) {
-      return expense[expense.length - 1].id + 1;
-    }
-    return 0;
-  };
-
   handleChange = ({ target }) => {
     const { value, name } = target;
     this.setState({ [name]: value });
   };
 
-  fetchExchangeRates = async () => {
-    const { propsGetExchangeRates } = this.props;
-    const END_POINT = 'https://economia.awesomeapi.com.br/json/all';
-    const response = await fetch(END_POINT);
-    const responseJson = await response.json();
-    delete responseJson.USDT;
-    const { expenses } = this.props;
-    const {
-      expenseValue,
-      expenseDescription,
-      expenseCurrency,
-      expenseMethod,
-      expenseTag,
-    } = this.state;
-    propsGetExchangeRates([
-      ...expenses,
-      {
-        id: this.expensesCheck(expenses),
-        value: expenseValue,
-        description: expenseDescription,
-        currency: expenseCurrency,
-        method: expenseMethod,
-        tag: expenseTag,
-        exchangeRates: responseJson,
-      },
-    ]);
-  };
-
-  handleClick = async () => {
-    await this.fetchExchangeRates();
-    this.setState({ expenseValue: '', expenseDescription: '' });
+  handleClick = async (obj) => {
+    const { propsFetchExchangeRates, expenses } = this.props;
+    const teste = [obj, expenses];
+    await propsFetchExchangeRates(teste);
+    this.setState({
+      expenseValue: '',
+      expenseDescription: '',
+    });
   };
 
   render() {
@@ -70,7 +40,8 @@ class WalletForm extends Component {
       expenseTag,
       expenseValue,
     } = this.state;
-    const { currencies } = this.props;
+    const { currencies, expenses } = this.props;
+    // console.log(expenses);
     return (
       <form>
         <label htmlFor="expenseValue">
@@ -116,9 +87,9 @@ class WalletForm extends Component {
             data-testid="method-input"
             onChange={ this.handleChange }
           >
-            <option value="cash">Dinheiro</option>
-            <option value="credit">Cartão de crédito</option>
-            <option value="debit">Cartão de débito</option>
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Cartão de crédito">Cartão de crédito</option>
+            <option value="Cartão de débito">Cartão de débito</option>
           </select>
         </label>
         <label htmlFor="expenseTag">
@@ -129,14 +100,17 @@ class WalletForm extends Component {
             data-testid="tag-input"
             onChange={ this.handleChange }
           >
-            <option value="food">Alimentação</option>
-            <option value="leisure">Lazer</option>
-            <option value="work">Trabalho</option>
-            <option value="transport">Transporte</option>
-            <option value="health">Saúde</option>
+            <option value="Alimentação">Alimentação</option>
+            <option value="Lazer">Lazer</option>
+            <option value="Trabalho">Trabalho</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Saúde">Saúde</option>
           </select>
         </label>
-        <button type="button" onClick={ () => this.handleClick() }>
+        <button
+          type="button"
+          onClick={ () => this.handleClick(this.state, expenses) }
+        >
           Adicionar despesa
         </button>
       </form>
@@ -156,7 +130,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   propsFetchCurrencies: (payload) => dispatch(fetchCurrencies(payload)),
-  propsGetExchangeRates: (payload) => dispatch(getExchangeRates(payload)),
+  propsFetchExchangeRates: (payload) => dispatch(fetchExchangeRates(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForm);

@@ -24,4 +24,35 @@ function fetchCurrencies() {
 
 const getExchangeRates = (payload) => ({ type: 'GET_EXCHANGE', payload });
 
-export { actLogin, fetchCurrencies, getExchangeRates };
+function fetchExchangeRates(obj) {
+  return async (dispatch) => {
+    const END_POINT = 'https://economia.awesomeapi.com.br/json/all';
+    const response = await fetch(END_POINT);
+    const responseJson = await response.json();
+    delete responseJson.USDT;
+    const {
+      expenseValue,
+      expenseDescription,
+      expenseCurrency,
+      expenseMethod,
+      expenseTag,
+    } = obj[0];
+
+    dispatch(
+      getExchangeRates([
+        ...obj[1],
+        {
+          id: obj[1].length,
+          value: expenseValue,
+          description: expenseDescription,
+          currency: expenseCurrency,
+          method: expenseMethod,
+          tag: expenseTag,
+          exchangeRates: responseJson,
+        },
+      ]),
+    );
+  };
+}
+
+export { actLogin, fetchCurrencies, fetchExchangeRates };
