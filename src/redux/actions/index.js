@@ -3,6 +3,7 @@ import {
   GET_CURRENCIES,
   LOGIN_ACTION,
   GET_EXCHANGE,
+  REMOVE_EXPENSE,
 } from './actionTypes';
 
 // Coloque aqui suas actions
@@ -64,4 +65,6 @@ function fetchExchangeRates(obj) {
   };
 }
 
-export { actLogin, fetchCurrencies, fetchExchangeRates };
+const removeExpense = (payload) => ({ type: REMOVE_EXPENSE, payload });
+
+export { actLogin, removeExpense, fetchCurrencies, fetchExchangeRates };

@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { removeExpense } from '../redux/actions';
 
 class Table extends Component {
+  teste = (idToRemove) => {
+    const { propsRemoveExpense, expenses } = this.props;
+    const expensesAfterRemove = expenses.filter((e) => e.id !== idToRemove);
+    propsRemoveExpense(expensesAfterRemove);
+  };
+
   createTable = (expenses) => {
     if (expenses.length === 0) {
       return null;
@@ -19,6 +26,15 @@ class Table extends Component {
           {(e.value * Number(e.exchangeRates[e.currency].ask)).toFixed(2)}
         </td>
         <td>Real</td>
+        <td>
+          <button
+            type="button"
+            data-testid="delete-btn"
+            onClick={ () => this.teste(e.id) }
+          >
+            X
+          </button>
+        </td>
       </tr>
     ));
   };
@@ -57,4 +73,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Table);
+const mapDispatchToProps = (dispatch) => ({
+  propsRemoveExpense: (payload) => dispatch(removeExpense(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);
