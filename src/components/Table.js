@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { removeExpense } from '../redux/actions';
+import { removeExpense, toEditExpense } from '../redux/actions';
 
 class Table extends Component {
-  teste = (idToRemove) => {
+  removeExpenses = (idToRemove) => {
     const { propsRemoveExpense, expenses } = this.props;
     const expensesAfterRemove = expenses.filter((e) => e.id !== idToRemove);
     propsRemoveExpense(expensesAfterRemove);
+  };
+
+  toEditExpenses = (idToEdit) => {
+    const { propsToEditExpense } = this.props;
+    propsToEditExpense(idToEdit);
   };
 
   createTable = (expenses) => {
@@ -30,9 +35,16 @@ class Table extends Component {
           <button
             type="button"
             data-testid="delete-btn"
-            onClick={ () => this.teste(e.id) }
+            onClick={ () => this.removeExpenses(e.id) }
           >
             X
+          </button>
+          <button
+            type="button"
+            data-testid="edit-btn"
+            onClick={ () => this.toEditExpenses(e.id) }
+          >
+            Edit
           </button>
         </td>
       </tr>
@@ -42,7 +54,7 @@ class Table extends Component {
   render() {
     const { expenses } = this.props;
     return (
-      <table>
+      <table width="95%">
         <caption>Despesas</caption>
         <thead>
           <tr>
@@ -75,6 +87,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => ({
   propsRemoveExpense: (payload) => dispatch(removeExpense(payload)),
+  propsToEditExpense: (payload) => dispatch(toEditExpense(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

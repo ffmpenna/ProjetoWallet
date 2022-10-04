@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCurrencies, fetchExchangeRates } from '../redux/actions';
+import {
+  editExpense,
+  fetchCurrencies,
+  fetchExchangeRates,
+} from '../redux/actions';
 
 class WalletForm extends Component {
   state = {
@@ -16,6 +20,25 @@ class WalletForm extends Component {
     const { propsFetchCurrencies } = this.props;
     propsFetchCurrencies();
   }
+
+  handleEdit = (obj) => {
+    const { propsEditExpense } = this.props;
+    const {
+      expenseValue,
+      expenseDescription,
+      expenseCurrency,
+      expenseMethod,
+      expenseTag,
+    } = obj;
+    const expense = {
+      value: expenseValue,
+      description: expenseDescription,
+      currency: expenseCurrency,
+      method: expenseMethod,
+      tag: expenseTag,
+    };
+    propsEditExpense(expense);
+  };
 
   handleChange = ({ target }) => {
     const { value, name } = target;
@@ -40,13 +63,11 @@ class WalletForm extends Component {
       expenseTag,
       expenseValue,
     } = this.state;
-    const { currencies } = this.props;
-    // console.log(expenses);
+    const { currencies, editor, idToEdit } = this.props;
+    console.log(editor, idToEdit);
     return (
       <form>
-        <label
-          htmlFor="expenseValue"
-        >
+        <label htmlFor="expenseValue">
           Valor
           <input
             name="expenseValue"
@@ -109,9 +130,15 @@ class WalletForm extends Component {
             <option value="Saúde">Saúde</option>
           </select>
         </label>
-        <button type="button" onClick={ () => this.handleClick(this.state) }>
-          Adicionar despesa
-        </button>
+        {!editor ? (
+          <button type="button" onClick={ () => this.handleClick(this.state) }>
+            Adicionar despesa
+          </button>
+        ) : (
+          <button type="button" onClick={ () => this.handleEdit(this.state) }>
+            Editar despesa
+          </button>
+        )}
       </form>
     );
   }
@@ -123,13 +150,14 @@ WalletForm.propTypes = {
 }.isRequired;
 
 const mapStateToProps = (state) => {
-  const { currencies, expenses } = state.wallet;
-  return { currencies, expenses };
+  const { currencies, expenses, editor, idToEdit } = state.wallet;
+  return { currencies, expenses, editor, idToEdit };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   propsFetchCurrencies: (payload) => dispatch(fetchCurrencies(payload)),
   propsFetchExchangeRates: (payload) => dispatch(fetchExchangeRates(payload)),
+  propsEditExpense: (payload) => dispatch(editExpense(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletForm);

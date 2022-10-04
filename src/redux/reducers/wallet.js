@@ -10,7 +10,7 @@ const INITIAL_STATE = {
   currencies: [],
   expenses: [],
   editor: false,
-  idToEdit: 0,
+  idToEdit: '',
   error: '',
 };
 
@@ -22,6 +22,23 @@ function wallet(state = INITIAL_STATE, action) {
     return { ...state, expenses: action.payload };
   case REMOVE_EXPENSE:
     return { ...state, expenses: action.payload };
+  case 'TO_EDIT_EXPENSE':
+    return { ...state, editor: true, idToEdit: action.payload };
+  case 'EDIT_EXPENSE':
+    return {
+      ...state,
+      editor: false,
+      expenses: state.expenses.map((expense) => {
+        if (expense.id === state.idToEdit) {
+          return {
+            id: expense.id,
+            ...action.payload,
+            exchangeRates: expense.exchangeRates,
+          };
+        }
+        return expense;
+      }),
+    };
   case FAILED_REQUEST:
     return { ...state, error: action.payload };
   default:

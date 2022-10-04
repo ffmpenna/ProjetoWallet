@@ -17,8 +17,8 @@ function fetchCurrencies() {
     try {
       const END_POINT = 'https://economia.awesomeapi.com.br/json/all';
       const response = await fetch(END_POINT);
-      const responseJson = await response.json();
-      const currencies = Object.keys(responseJson).filter(
+      const data = await response.json();
+      const currencies = Object.keys(data).filter(
         (currencie) => currencie !== 'USDT',
       );
       dispatch(getCurrencies(currencies));
@@ -67,4 +67,15 @@ function fetchExchangeRates(obj) {
 
 const removeExpense = (payload) => ({ type: REMOVE_EXPENSE, payload });
 
-export { actLogin, removeExpense, fetchCurrencies, fetchExchangeRates };
+const toEditExpense = (payload) => ({ type: 'TO_EDIT_EXPENSE', payload });
+
+const editExpense = (payload) => ({ type: 'EDIT_EXPENSE', payload });
+
+export {
+  actLogin,
+  removeExpense,
+  toEditExpense,
+  editExpense,
+  fetchCurrencies,
+  fetchExchangeRates,
+};
