@@ -8,8 +8,8 @@ class WalletForm extends Component {
     expenseValue: '',
     expenseDescription: '',
     expenseCurrency: 'USD',
-    expenseMethod: 'cash',
-    expenseTag: 'food',
+    expenseMethod: 'Dinheiro',
+    expenseTag: 'Alimentação',
   };
 
   componentDidMount() {
@@ -24,8 +24,8 @@ class WalletForm extends Component {
 
   handleClick = async (obj) => {
     const { propsFetchExchangeRates, expenses } = this.props;
-    const teste = [obj, expenses];
-    await propsFetchExchangeRates(teste);
+    const data = [obj, expenses];
+    await propsFetchExchangeRates(data);
     this.setState({
       expenseValue: '',
       expenseDescription: '',
@@ -40,11 +40,13 @@ class WalletForm extends Component {
       expenseTag,
       expenseValue,
     } = this.state;
-    const { currencies, expenses } = this.props;
+    const { currencies } = this.props;
     // console.log(expenses);
     return (
       <form>
-        <label htmlFor="expenseValue">
+        <label
+          htmlFor="expenseValue"
+        >
           Valor
           <input
             name="expenseValue"
@@ -107,10 +109,7 @@ class WalletForm extends Component {
             <option value="Saúde">Saúde</option>
           </select>
         </label>
-        <button
-          type="button"
-          onClick={ () => this.handleClick(this.state, expenses) }
-        >
+        <button type="button" onClick={ () => this.handleClick(this.state) }>
           Adicionar despesa
         </button>
       </form>
