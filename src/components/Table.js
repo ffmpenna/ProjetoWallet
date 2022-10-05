@@ -4,15 +4,29 @@ import { connect } from 'react-redux';
 import { removeExpense, toEditExpense } from '../redux/actions';
 
 class Table extends Component {
+  toggleEdit = (target) => {
+    const selectEdit = 'select-edit';
+    const prevSelect = document.getElementsByClassName(selectEdit);
+    if (prevSelect[0] !== undefined) {
+      prevSelect[0].classList.remove(selectEdit);
+    }
+    const element = target.parentNode.parentNode;
+    element.classList.add(selectEdit);
+    document
+      .querySelector('#wallet-form')
+      .scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   removeExpenses = (idToRemove) => {
     const { propsRemoveExpense, expenses } = this.props;
     const expensesAfterRemove = expenses.filter((e) => e.id !== idToRemove);
     propsRemoveExpense(expensesAfterRemove);
   };
 
-  toEditExpenses = (idToEdit) => {
+  toEditExpenses = (idToEdit, { target }) => {
     const { propsToEditExpense } = this.props;
     propsToEditExpense(idToEdit);
+    this.toggleEdit(target);
   };
 
   createTable = (expenses) => {
@@ -36,7 +50,7 @@ class Table extends Component {
             className="edit"
             type="button"
             data-testid="edit-btn"
-            onClick={ () => this.toEditExpenses(e.id) }
+            onClick={ (target) => this.toEditExpenses(e.id, target) }
           >
             Editar
           </button>

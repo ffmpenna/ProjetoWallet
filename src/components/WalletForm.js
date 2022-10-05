@@ -38,6 +38,8 @@ class WalletForm extends Component {
       tag: expenseTag,
     };
     propsEditExpense(expense);
+    const element = document.querySelector('.select-edit');
+    element.classList.remove('select-edit');
   };
 
   handleChange = ({ target }) => {
@@ -63,11 +65,10 @@ class WalletForm extends Component {
       expenseTag,
       expenseValue,
     } = this.state;
-    const { currencies, editor, idToEdit } = this.props;
-    console.log(editor, idToEdit);
+    const { currencies, editor } = this.props;
     return (
       <div className="wallet-form-container">
-        <form className="form wallet-form">
+        <form id="wallet-form" className="form wallet-form">
           <label htmlFor="expenseValue">
             <p>Valor</p>
             <input
