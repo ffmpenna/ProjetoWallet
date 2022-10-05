@@ -6,7 +6,7 @@ import WalletForm from '../components/WalletForm';
 class Wallet extends Component {
   render() {
     return (
-      <div>
+      <div className="wallet-container">
         <Header />
         <WalletForm />
         <Table />

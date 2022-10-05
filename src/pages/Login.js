@@ -36,35 +36,42 @@ class Login extends React.Component {
   render() {
     const { isBtnDisabled } = this.state;
     return (
-      <form className="form">
-        <label htmlFor="email">
-          E-mail
-          <input
-            name="email"
-            type="email"
-            placeholder="Digite seu E-mail"
-            onChange={ this.handleChange }
-            data-testid="email-input"
-          />
-        </label>
-        <label htmlFor="password">
-          Senha
-          <input
-            name="password"
-            type="password"
-            placeholder="Digite sua senha"
-            onChange={ this.handleChange }
-            data-testid="password-input"
-          />
-        </label>
-        <button
-          type="button"
-          disabled={ isBtnDisabled }
-          onClick={ this.handleClick }
-        >
-          Entrar
-        </button>
-      </form>
+      <div className="login-container">
+        <h1>TRYBEWALLET</h1>
+        <div className="form-container">
+          <form className="form login-form">
+            <h3 className="login-title">Login</h3>
+            <label htmlFor="email">
+              <input
+                className="text-input"
+                name="email"
+                type="email"
+                placeholder="Digite seu email"
+                onChange={ this.handleChange }
+                data-testid="email-input"
+              />
+            </label>
+            <label htmlFor="password">
+              <input
+                className="text-input"
+                name="password"
+                type="password"
+                placeholder="Digite sua senha"
+                onChange={ this.handleChange }
+                data-testid="password-input"
+              />
+            </label>
+            <button
+              className="login-btn btn"
+              type="button"
+              disabled={ isBtnDisabled }
+              onClick={ this.handleClick }
+            >
+              Entrar
+            </button>
+          </form>
+        </div>
+      </div>
     );
   }
 }
