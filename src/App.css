@@ -218,6 +218,7 @@ tbody td {
 .edit {
   background-color: transparent;
   border: none;
+
   /* color: rgb(255, 228, 110); */
   cursor: pointer;
   font-weight: 700;
@@ -232,7 +233,7 @@ tbody td {
   font-weight: 700;
 }
 
-.select-edit{
+.select-edit {
   background-color: rgb(255, 228, 110);
-  color:#252525;
+  color: #252525;
 }
