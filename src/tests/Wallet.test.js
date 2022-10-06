@@ -72,4 +72,17 @@ describe('Testes página Wallet', () => {
 
     expect(editedDescription).not.toBeInTheDocument();
   });
+  test('Teste falha na requisição', () => {
+    global.fetch = jest.fn(() => Promise.resolve({
+      json: () => Promise.resolve(null),
+    }));
+
+    renderWithRouterAndRedux(<Wallet />);
+
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(() => {
+      global.fetch.toThrow('error');
+    });
+    global.fetch = jest.clearAllMocks();
+  });
 });
