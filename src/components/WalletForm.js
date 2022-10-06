@@ -38,8 +38,8 @@ class WalletForm extends Component {
       tag: expenseTag,
     };
     propsEditExpense(expense);
-    const element = document.querySelector('.select-edit');
-    element.classList.remove('select-edit');
+    // const element = document.querySelector('.select-edit');
+    // element.classList.remove('select-edit');
   };
 
   handleChange = ({ target }) => {
@@ -140,6 +140,7 @@ class WalletForm extends Component {
         </form>
         {!editor ? (
           <button
+            data-testid="add-btn"
             className="btn"
             type="button"
             onClick={ () => this.handleClick(this.state) }
@@ -148,6 +149,7 @@ class WalletForm extends Component {
           </button>
         ) : (
           <button
+            data-testid="add-edit-btn"
             className="btn"
             type="button"
             onClick={ () => this.handleEdit(this.state) }
