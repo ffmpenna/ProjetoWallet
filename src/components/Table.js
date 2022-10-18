@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 import { removeExpense, toEditExpense } from '../redux/actions';
 
 class Table extends Component {
-  // toggleEdit = (target) => {
-  //   const selectEdit = 'select-edit';
-  //   const prevSelect = document.getElementsByClassName(selectEdit);
-  //   if (prevSelect[0] !== undefined) {
-  //     prevSelect[0].classList.remove(selectEdit);
-  //   }
-  //   const element = target.parentNode.parentNode;
-  //   element.classList.add(selectEdit);
-  //   document
-  //     .querySelector('#wallet-form')
-  //     .scrollIntoView({ behavior: 'smooth', block: 'center' });
-  // };
+  toggleEdit = (target) => {
+    const selectEdit = 'select-edit';
+    const prevSelect = document.getElementsByClassName(selectEdit);
+    if (prevSelect[0] !== undefined) {
+      prevSelect[0].classList.remove(selectEdit);
+    }
+    const element = target.parentNode.parentNode;
+    element.classList.add(selectEdit);
+    document
+      .querySelector('#wallet-form')
+      .scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   removeExpenses = (idToRemove) => {
     const { propsRemoveExpense, expenses } = this.props;
@@ -26,7 +26,7 @@ class Table extends Component {
   toEditExpenses = (idToEdit) => {
     const { propsToEditExpense } = this.props;
     propsToEditExpense(idToEdit);
-    // this.toggleEdit(target);
+    this.toggleEdit(target);
   };
 
   createTable = (expenses) => {

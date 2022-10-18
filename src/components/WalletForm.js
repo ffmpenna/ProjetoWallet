@@ -38,8 +38,8 @@ class WalletForm extends Component {
       tag: expenseTag,
     };
     propsEditExpense(expense);
-    // const element = document.querySelector('.select-edit');
-    // element.classList.remove('select-edit');
+    const element = document.querySelector('.select-edit');
+    element.classList.remove('select-edit');
   };
 
   handleChange = ({ target }) => {
