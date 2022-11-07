@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { removeExpense, toEditExpense } from '../redux/actions';
 
@@ -23,7 +23,7 @@ class Table extends Component {
     propsRemoveExpense(expensesAfterRemove);
   };
 
-  toEditExpenses = (idToEdit) => {
+  toEditExpenses = (idToEdit, { target }) => {
     const { propsToEditExpense } = this.props;
     propsToEditExpense(idToEdit);
     this.toggleEdit(target);
